@@ -197,18 +197,18 @@ class MyGame(arcade.Window):
         self.physics_engine.update()
         
         
-        coin_hit_list = arcade.check_for_collision_with_list(
-            self.player_sprite, self.scene["Coins"]
-        )
+        # coin_hit_list = arcade.check_for_collision_with_list(
+        #     self.player_sprite, self.scene["Coins"]
+        # )
 
-        # Loop through each coin we hit (if any) and remove it
-        for coin in coin_hit_list:
-            # Remove the coin
-            coin.remove_from_sprite_lists()
-            # Play a sound
-            arcade.play_sound(self.collect_coin_sound)
-            # Add one to the score
-            self.score += 10
+        # # Loop through each coin we hit (if any) and remove it
+        # for coin in coin_hit_list:
+        #     # Remove the coin
+        #     coin.remove_from_sprite_lists()
+        #     # Play a sound
+        #     arcade.play_sound(self.collect_coin_sound)
+        #     # Add one to the score
+        #     self.score += 10
 
         # Did the player fall off the map?
         if self.player_sprite.center_y < -100:
