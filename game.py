@@ -208,7 +208,7 @@ class MyGame(arcade.Window):
             # Play a sound
             arcade.play_sound(self.collect_coin_sound)
             # Add one to the score
-            self.score += 1
+            self.score += 10
 
         # Did the player fall off the map?
         if self.player_sprite.center_y < -100:
