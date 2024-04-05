@@ -74,6 +74,7 @@ class MyGame(arcade.Window):
         self.collect_coin_sound = arcade.load_sound(":resources:sounds/coin1.wav")
         self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
         self.game_over = arcade.load_sound(":resources:sounds/gameover1.wav")
+        self.win_game = arcade.load_sound(":resources:sounds/upgrade1.wav")
 
     
 
@@ -125,7 +126,7 @@ class MyGame(arcade.Window):
         self.end_of_map = self.tile_map.width * GRID_PIXEL_SIZE
         
     
-        arcade.set_background_color(arcade.csscolor.WHITE)
+        arcade.set_background_color(arcade.color.FLORAL_WHITE)
             
         self.physics_engine = arcade.PhysicsEnginePlatformer(
             self.player_sprite,
@@ -248,6 +249,7 @@ class MyGame(arcade.Window):
          # Check if the player reaches the end of the level
         if self.player_sprite.center_x >= 1900:
             self.level_completed = True  # Set level completed flag
+            arcade.play_sound(self.win_game)
 
             # Make sure to keep the score from this level when setting up the next level
             self.reset_score = False
