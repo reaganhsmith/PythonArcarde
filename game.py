@@ -7,10 +7,10 @@ import arcade
 # Constants
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
-SCREEN_TITLE = "Pickle Game!!"
+SCREEN_TITLE = "Fruit Game!!"
 
 CHARACTER_SCALING = .3
-TILE_SCALING = 1
+TILE_SCALING = 1.2
 COIN_SCALING = .2
 SPRITE_PIXEL_SIZE = 128
 GRID_PIXEL_SIZE = SPRITE_PIXEL_SIZE * TILE_SCALING
@@ -68,6 +68,8 @@ class MyGame(arcade.Window):
         
         self.level = 1
         
+        self.level_completed = False  
+        
         # Sounds for different actions
         self.collect_coin_sound = arcade.load_sound(":resources:sounds/coin1.wav")
         self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
@@ -83,7 +85,7 @@ class MyGame(arcade.Window):
         self.gui_camera = arcade.Camera(self.width, self.height)
 
         # Map name
-        map_name = "Final_Map.json"
+        map_name = "Game2.json"
 
         # Layer Specific Options for the Tilemap
         layer_options = {
@@ -151,6 +153,18 @@ class MyGame(arcade.Window):
             18,
         )
         
+        
+        if self.level_completed:  
+            arcade.draw_text(
+                f"Level Completed! Your score was: {self.score} points",
+                SCREEN_WIDTH // 2,
+                SCREEN_HEIGHT // 2,
+                arcade.csscolor.PINK,
+                font_size=24,
+                anchor_x="center",
+                anchor_y="center"
+            )
+        
     # Functions to pick up on key movement 
     def on_key_press(self, key, modifiers):
         
@@ -166,6 +180,9 @@ class MyGame(arcade.Window):
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT or key == arcade.key.D:
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
+            
+             # Reset level completed flag if any key is pressed
+        self.level_completed = False
             
     def on_key_release(self, key, modifiers):
         
@@ -197,18 +214,18 @@ class MyGame(arcade.Window):
         self.physics_engine.update()
         
         
-        # coin_hit_list = arcade.check_for_collision_with_list(
-        #     self.player_sprite, self.scene["Coins"]
-        # )
+        coin_hit_list = arcade.check_for_collision_with_list(
+            self.player_sprite, self.scene["Coins"]
+        )
 
-        # # Loop through each coin we hit (if any) and remove it
-        # for coin in coin_hit_list:
-        #     # Remove the coin
-        #     coin.remove_from_sprite_lists()
-        #     # Play a sound
-        #     arcade.play_sound(self.collect_coin_sound)
-        #     # Add one to the score
-        #     self.score += 10
+        # Loop through each coin we hit (if any) and remove it
+        for coin in coin_hit_list:
+            # Remove the coin
+            coin.remove_from_sprite_lists()
+            # Play a sound
+            arcade.play_sound(self.collect_coin_sound)
+            # Add one to the score
+            self.score += 10
 
         # Did the player fall off the map?
         if self.player_sprite.center_y < -100:
@@ -228,17 +245,15 @@ class MyGame(arcade.Window):
 
             arcade.play_sound(self.game_over)
 
-        # See if the user got to the end of the level
-        if self.player_sprite.center_x >= self.end_of_map:
-            # Advance to the next level
-            self.level += 1
+         # Check if the player reaches the end of the level
+        if self.player_sprite.center_x >= 1900:
+            self.level_completed = True  # Set level completed flag
 
             # Make sure to keep the score from this level when setting up the next level
             self.reset_score = False
 
             # Load the next level
             self.setup()
-
         # Position the camera
         self.center_camera_to_player()
     
