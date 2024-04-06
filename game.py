@@ -86,7 +86,7 @@ class MyGame(arcade.Window):
         self.gui_camera = arcade.Camera(self.width, self.height)
 
         # Map name
-        map_name = "Game2.json"
+        map_name = f"Game_{self.level}.json"
 
         # Layer Specific Options for the Tilemap
         layer_options = {
@@ -232,7 +232,7 @@ class MyGame(arcade.Window):
         if self.player_sprite.center_y < -100:
             self.player_sprite.center_x = PLAYER_START_X
             self.player_sprite.center_y = PLAYER_START_Y
-
+            self.score -= 10
             arcade.play_sound(self.game_over)
 
         # Did the player touch something they should not?
@@ -243,12 +243,13 @@ class MyGame(arcade.Window):
             self.player_sprite.change_y = 0
             self.player_sprite.center_x = PLAYER_START_X
             self.player_sprite.center_y = PLAYER_START_Y
-
+            self.score -= 10
             arcade.play_sound(self.game_over)
 
          # Check if the player reaches the end of the level
         if self.player_sprite.center_x >= 1900:
             self.level_completed = True  # Set level completed flag
+            self.level += 1
             arcade.play_sound(self.win_game)
 
             # Make sure to keep the score from this level when setting up the next level
