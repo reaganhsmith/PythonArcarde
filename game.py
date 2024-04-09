@@ -86,7 +86,7 @@ class MyGame(arcade.Window):
         self.gui_camera = arcade.Camera(self.width, self.height)
 
         # Map name
-        map_name = f"Game_4.json"
+        map_name = f"Game_{self.level}.json"
 
         # Layer Specific Options for the Tilemap
         layer_options = {
